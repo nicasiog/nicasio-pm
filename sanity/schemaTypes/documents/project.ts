@@ -1,0 +1,122 @@
+import { defineArrayMember, defineField, defineType } from 'sanity'
+
+import { iconOptions } from '../icons'
+
+export const PROJECT_STATUSES = ['Shipped', 'In production', 'Personal project'] as const
+
+export const project = defineType({
+  name: 'project',
+  title: 'Project',
+  type: 'document',
+  groups: [
+    { name: 'overview', title: 'Overview', default: true },
+    { name: 'meta', title: 'Meta row' },
+    { name: 'body', title: 'Body' },
+    { name: 'seo', title: 'SEO' },
+  ],
+  fields: [
+    defineField({ name: 'title', title: 'Title', type: 'string', group: 'overview', validation: (Rule) => Rule.required() }),
+    defineField({
+      name: 'slug',
+      title: 'Slug',
+      type: 'slug',
+      group: 'overview',
+      options: { source: 'title', maxLength: 96 },
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: 'headline',
+      title: 'Outcome-led headline',
+      type: 'string',
+      group: 'overview',
+      description: 'The H1 on the case study. Falls back to the title.',
+    }),
+    defineField({
+      name: 'context',
+      title: 'Context',
+      type: 'string',
+      group: 'overview',
+      description: 'e.g. Company // Team',
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: 'category',
+      title: 'Category',
+      type: 'reference',
+      to: [{ type: 'category' }],
+      group: 'overview',
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: 'status',
+      title: 'Status',
+      type: 'string',
+      group: 'overview',
+      options: { list: PROJECT_STATUSES.map((s) => ({ title: s, value: s })), layout: 'radio' },
+    }),
+    defineField({
+      name: 'summary',
+      title: 'Summary',
+      type: 'text',
+      rows: 3,
+      group: 'overview',
+      validation: (Rule) => Rule.required().max(200),
+    }),
+    defineField({
+      name: 'impact',
+      title: 'Impact chip',
+      type: 'object',
+      group: 'overview',
+      description: 'One metric shown on the card, e.g. "+12% conversion". Leave empty to hide.',
+      fields: [
+        defineField({ name: 'icon', title: 'Icon', type: 'string', options: { list: iconOptions } }),
+        defineField({ name: 'text', title: 'Text', type: 'string' }),
+      ],
+    }),
+    defineField({
+      name: 'heroImage',
+      title: 'Hero image',
+      type: 'imageWithAlt',
+      group: 'overview',
+      description: 'A real screenshot. Shown at 16:10 on cards and 16:9 on the case study.',
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: 'stack',
+      title: 'Stack',
+      type: 'array',
+      group: 'overview',
+      of: [defineArrayMember({ type: 'string' })],
+    }),
+    defineField({
+      name: 'tags',
+      title: 'Tags',
+      type: 'array',
+      group: 'overview',
+      of: [defineArrayMember({ type: 'string' })],
+    }),
+    defineField({ name: 'role', title: 'Role', type: 'string', group: 'meta' }),
+    defineField({ name: 'roleDetail', title: 'Role detail', type: 'string', group: 'meta' }),
+    defineField({ name: 'timeline', title: 'Timeline', type: 'string', group: 'meta' }),
+    defineField({ name: 'timelineDetail', title: 'Timeline detail', type: 'string', group: 'meta' }),
+    defineField({ name: 'outcome', title: 'Primary outcome', type: 'string', group: 'meta' }),
+    defineField({ name: 'outcomeDetail', title: 'Outcome detail', type: 'string', group: 'meta' }),
+    defineField({ name: 'codeUrl', title: 'Code URL', type: 'url', group: 'meta' }),
+    defineField({ name: 'liveUrl', title: 'Live URL', type: 'url', group: 'meta' }),
+    defineField({ name: 'body', title: 'Body', type: 'blockContent', group: 'body', validation: (Rule) => Rule.required() }),
+    defineField({
+      name: 'order',
+      title: 'Order',
+      type: 'number',
+      group: 'overview',
+      description: 'Lower numbers come first.',
+      validation: (Rule) => Rule.required().integer(),
+    }),
+    defineField({ name: 'seoTitle', title: 'SEO title', type: 'string', group: 'seo' }),
+    defineField({ name: 'seoDescription', title: 'SEO description', type: 'text', rows: 3, group: 'seo', validation: (Rule) => Rule.max(160) }),
+  ],
+  orderings: [{ title: 'Order', name: 'orderAsc', by: [{ field: 'order', direction: 'asc' }] }],
+  preview: {
+    select: { title: 'title', subtitle: 'context', media: 'heroImage' },
+  },
+})
