@@ -35,6 +35,10 @@ export async function POST(req: NextRequest) {
       revalidatePath(`/projects/${body.slug}`)
     }
 
+    // Belt and braces: the site is a handful of pages, so also expire every
+    // route under the root layout. A tag mismatch can then never leave a page stale.
+    revalidatePath('/', 'layout')
+
     return NextResponse.json({ revalidated: true, type: body._type, now: Date.now() })
   } catch (error) {
     const message = error instanceof Error ? error.message : 'Unknown error'
