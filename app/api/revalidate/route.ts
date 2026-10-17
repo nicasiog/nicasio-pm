@@ -41,3 +41,11 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ message }, { status: 500 })
   }
 }
+
+/** Browsers send GET; explain instead of a bare 405. */
+export function GET() {
+  return NextResponse.json(
+    { message: 'This endpoint only accepts POST requests from the Sanity webhook. A GET here means the webhook method is not POST, or the URL redirects.' },
+    { status: 405 },
+  )
+}
