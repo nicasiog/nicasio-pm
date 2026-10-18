@@ -85,7 +85,7 @@ export function MobileMenu({ resumeUrl }: MobileMenuProps) {
         aria-modal="true"
         aria-label="Site navigation"
         hidden={!open}
-        className="fixed inset-x-0 top-[72px] bottom-0 z-40 overflow-y-auto bg-bg/95 backdrop-blur-xl"
+        className="fixed inset-x-0 top-[72px] z-40 h-[calc(100dvh-72px)] overflow-y-auto bg-bg"
       >
         <nav aria-label="Mobile" className="mx-auto flex w-full max-w-[1248px] flex-col gap-2 px-5 py-6">
           <ul className="flex flex-col gap-1">
