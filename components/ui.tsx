@@ -67,7 +67,7 @@ export function StatusBadge({ children, pulse = true, className = '' }: { childr
 export function MetricTile({ metric, size = 'md' }: { metric: Metric; size?: 'sm' | 'md' | 'lg' }) {
   const valueSize = { sm: 'text-xl', md: 'text-headline-sm', lg: 'text-headline' }[size]
   return (
-    <div className="flex flex-col gap-1 rounded-tile border border-border bg-surface-2/70 px-4 py-3">
+    <div className="flex h-full flex-col gap-1 rounded-tile border border-border bg-surface-2/70 px-4 py-3">
       <span className={`font-display font-bold tracking-tight text-text ${valueSize}`}>{metric.value}</span>
       <span className="eyebrow-sm text-text-muted">{metric.label}</span>
       {metric.note ? <span className="text-sm text-text-muted">{metric.note}</span> : null}
